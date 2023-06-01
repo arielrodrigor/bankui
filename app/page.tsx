@@ -15,10 +15,6 @@ export default function Home() {
                 <History />
             </section>
         </div>
-
-
-
-
     </main>
   )
 }

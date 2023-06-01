@@ -1,14 +1,74 @@
 'use client';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import { AnimatePresence } from 'framer-motion';
-import Card from "@/components/Card";
+import Card from "@/components/AccountBalance/Card";
+import axios from "axios";
+
 
 const Index = () => {
     const [card, setCard] = useState("balance");
+    const [balance, setBalance] = useState(300);
+    const [amount, setAmount] = useState(0);
+
+    useEffect(() => {
+        // Simula obtener el número de cuenta del usuario autenticado
+        const accountNumber = '1234567890';
+        axios.get(`/api/accounts/${accountNumber}`)
+            .then(res => {
+                setBalance(res.data.balance);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }, []);
+
+    const handleAmountChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setAmount(Number(event.target.value));
+    };
 
     const handleClick = (cardName: string) => {
         setCard(cardName);
+        if(card === "deposit") {
+            handleDeposit();
+        }
+        if(card === "withdrawal") {
+            handleWithdrawal();
+        }
+
     };
+
+    const handleDeposit = () => {
+        const accountNumber = '1234567890';
+        axios.post(`/api/transactions`, {
+            accountNumber: accountNumber,
+            type: 'DEPOSITO',
+            amount: amount
+        })
+            .then(res => {
+                setBalance(res.data.balance);
+                setCard('balance');
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    };
+
+    const handleWithdrawal = () => {
+        const accountNumber = '1234567890';
+        axios.post(`/api/transactions`, {
+            accountNumber: accountNumber,
+            type: 'RETIRO',
+            amount: amount
+        })
+            .then(res => {
+                setBalance(res.data.balance);
+                setCard('balance');
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    };
+
 
     return (
         <AnimatePresence mode='wait'>
@@ -17,7 +77,7 @@ const Index = () => {
                     <Card key="balance">
                         <div className="px-4 py-5 text-center">
                             <h2 className="text-gray-600 text-sm font-thin uppercase">Account Balance</h2>
-                            <h1 className="text-4xl font-thin">$200</h1>
+                            <h1 className="text-4xl font-thin">${balance}</h1>
                             <p className="text-gray-500 font-thin">US Dollars</p>
                         </div>
                         <div className="px-4 pb-4">
@@ -31,7 +91,7 @@ const Index = () => {
                     <Card key="deposit">
                         <div className="px-4 py-5 text-center">
                             <h2 className="text-gray-600 text-sm font-thin uppercase">Deposit</h2>
-                            <input className="border border-gray-300 rounded px-3 py-2 w-full mb-4" type="text" placeholder="Amount" />
+                            <input className="border border-gray-300 rounded px-3 py-2 w-full mb-4" type="text" placeholder="Amount"  onChange={handleAmountChange} />
                             <button onClick={() => handleClick("balance")} className="bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-2xl w-full">Deposit</button>
                         </div>
                     </Card>
@@ -41,7 +101,7 @@ const Index = () => {
                     <Card key="withdrawal">
                         <div className="px-4 py-5 text-center">
                             <h2 className="text-gray-600 text-sm font-thin uppercase">Withdrawal</h2>
-                            <input className="border border-gray-300 rounded px-3 py-2 w-full mb-4" type="text" placeholder="Amount" />
+                            <input className="border border-gray-300 rounded px-3 py-2 w-full mb-4" type="text" placeholder="Amount"  onChange={handleAmountChange} />
                             <button onClick={() => handleClick("balance")} className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-2xl w-full">Withdrawal</button>
                         </div>
                     </Card>
