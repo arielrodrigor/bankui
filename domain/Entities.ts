@@ -68,18 +68,21 @@ export class Transaccion {
     monto: number;
     tipo: 'DEPOSITO' | 'RETIRO';
     Date: admin.firestore.Timestamp;
+    balance: number;
 
     constructor(monto: number, tipo: 'DEPOSITO' | 'RETIRO') {
         this.monto = monto;
         this.tipo = tipo;
         this.Date = admin.firestore.Timestamp.fromDate(new Date());
+        this.balance = 0;
     }
 
     toFirestore() {
         return {
             monto: this.monto,
             tipo: this.tipo,
-            Date: this.Date
+            Date: this.Date,
+            balance: this.balance,
         };
     }
 }
