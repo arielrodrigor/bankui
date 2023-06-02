@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import type { NextApiRequest } from 'next'
 import { cuentaService } from '@/dependencies'
 import { Transaccion } from '@/domain/Entities'
 
@@ -11,11 +10,11 @@ type ErrorData = {
     error: string;
 }
 
-export async function POST(req: NextApiRequest) {
-    const { method } = req
+export async function POST(request: Request) {
+    const { method } = request
 
     try {
-        const { accountNumber, type, amount } = req.body
+        const { accountNumber, type, amount } = await request.json();
 
         if (!accountNumber) {
             return NextResponse.json({ error: 'Número de cuenta inválido.' }, { status: 400 });

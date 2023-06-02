@@ -4,7 +4,7 @@ const Index = () => {
     return (
         <div>
 
-            <section className={'col-span-3 hidden xl:inline-flex xl:min-w-[600px]'}>
+            <section className={'col-span-3  xl:inline-flex xl:min-w-[600px]'}>
                 <div className="w-full bg-white rounded-xl shadow-md overflow-hidden">
                     <div className="px-4 py-5 text-center">
                         <h2 className="text-gray-600 text-2xl font-thin uppercase">History</h2>

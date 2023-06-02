@@ -1,5 +1,4 @@
 import { NextResponse } from 'next/server';
-import type { NextApiRequest } from 'next'
 import { cuentaService } from '@/dependencies'
 
 type BalanceData = {
@@ -10,10 +9,10 @@ type ErrorData = {
     error: string;
 }
 
-export async function POST(req: NextApiRequest) {
+export async function POST(request: Request) {
     const {
         query: { accountNumber },
-    } = req
+    } =  await request.json();
 
     try {
         if (!accountNumber) {
