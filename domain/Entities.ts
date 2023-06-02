@@ -14,26 +14,17 @@ export class Cuenta {
         }
 
         this.transacciones.push(transaccion);
-
-        console.log('realizarTransaccion')
-        console.log(transaccion)
-        // Actualiza el saldo después de cada transacción
         if (transaccion.tipo === 'DEPOSITO') {
             this.detalles.saldoActual += transaccion.monto;
-        } else { // RETIRO
+        } else {
             this.detalles.saldoActual -= transaccion.monto;
         }
         console.log( this.detalles.saldoActual)
     }
 
-
     getSaldo() {
-        return this.transacciones.reduce((saldo, transaccion) => {
-            return transaccion.tipo === 'DEPOSITO' ? saldo + transaccion.monto : saldo - transaccion.monto;
-        }, this.detalles.saldoInicial);
+        return this.detalles.saldoActual;
     }
-
-
 }
 
 

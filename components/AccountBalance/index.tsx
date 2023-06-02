@@ -7,13 +7,15 @@ import axios from "axios";
 
 const Index = () => {
     const [card, setCard] = useState("balance");
-    const [balance, setBalance] = useState(300);
+    const [balance, setBalance] = useState(0);
     const [amount, setAmount] = useState(0);
 
     useEffect(() => {
         // Simula obtener el número de cuenta del usuario autenticado
         const accountNumber = '123456789';
-        axios.get(`/api/accounts/${accountNumber}`)
+        axios.post(
+            `/api/accounts`,
+            { params: { accountNumber} })
             .then(res => {
                 setBalance(res.data.balance);
             })

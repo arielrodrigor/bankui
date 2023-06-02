@@ -11,7 +11,7 @@ type ErrorData = {
 
 export async function POST(request: Request) {
     const {
-        query: { accountNumber },
+        params: { accountNumber },
     } =  await request.json();
 
     try {
