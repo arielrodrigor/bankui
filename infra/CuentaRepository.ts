@@ -23,10 +23,13 @@ export class CuentaRepository {
                 ? new DepositoRealizado(cuenta.detalles, transaccion)
                 : new RetiroRealizado(cuenta.detalles, transaccion);
 
+            console.log(evento)
             eventos.push(evento);
 
             // Actualizar el saldo actual después de cada transacción
             cuenta.detalles.saldoActual = evento.data.saldoFinal;
+
+
         });
 
         // Save the events to the event store

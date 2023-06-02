@@ -25,12 +25,9 @@ export class CuentaService {
             throw new Error(`La cuenta con el número ${numeroDeCuenta} no existe.`);
         }
 
-        let nuevoSaldo = cuenta.getSaldo();
-        nuevoSaldo = transaccion.tipo === 'DEPOSITO'
-            ? nuevoSaldo + transaccion.monto
-            : nuevoSaldo - transaccion.monto;
 
         cuenta.realizarTransaccion(transaccion);
+
 
         await this.cuentaRepository.save(cuenta);
     }

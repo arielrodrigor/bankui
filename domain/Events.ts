@@ -29,6 +29,8 @@ export class DepositoRealizado implements Evento {
     data: { detalles: DetallesDeCuenta, transaccion: Transaccion, saldoFinal: number };
 
     constructor(detalles: DetallesDeCuenta, transaccion: Transaccion) {
+        console.log('constructor')
+        console.log( detalles);
         this.data = {
             detalles,
             transaccion,
