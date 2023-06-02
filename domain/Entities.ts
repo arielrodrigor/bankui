@@ -55,7 +55,7 @@ export class DetallesDeCuenta {
         };
     }
     static fromFirestore(data: any): DetallesDeCuenta {
-        return new DetallesDeCuenta(data.nombre, data.numeroDeCuenta, data.saldoInicial, data.saldoActual);
+        return new DetallesDeCuenta(data.detalles.nombre, data.detalles.numeroDeCuenta, data.detalles.saldoInicial, data.detalles.saldoActual);
     }
 }
 

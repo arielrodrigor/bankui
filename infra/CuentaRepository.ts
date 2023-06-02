@@ -38,8 +38,6 @@ export class CuentaRepository {
             transacciones: cuenta.transacciones.map(evento => evento.toFirestore()),
         };
 
-        console.log(accountData)
-
         // Save account data to Firebase
         await this.firebaseRepository.saveAccount(cuenta.detalles.numeroDeCuenta, accountData);
     }
@@ -48,21 +46,18 @@ export class CuentaRepository {
     async findByAccountNumber(numeroDeCuenta: string): Promise<Cuenta | null> {
 
         const eventos = this.eventStore.obtenerEventosParaEntidad('Cuenta', numeroDeCuenta);
-
         let detallesDeCuenta: DetallesDeCuenta | null = null;
-
         if (eventos.length > 0) {
             detallesDeCuenta = eventos[0].data.detalles as DetallesDeCuenta;
         } else {
-
             const cuentaData = await this.firebaseRepository.getAccountByNumber(numeroDeCuenta);
 
             if (!cuentaData) {
                 return null;
             }
             detallesDeCuenta = DetallesDeCuenta.fromFirestore(cuentaData);
-
         }
+
 
         const cuenta = new Cuenta(detallesDeCuenta);
 
