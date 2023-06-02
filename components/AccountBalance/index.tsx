@@ -3,11 +3,14 @@ import React, {useEffect, useState} from 'react';
 import { AnimatePresence } from 'framer-motion';
 import Card from "@/components/AccountBalance/Card";
 import axios from "axios";
+import {useRecoilState} from "recoil";
+import {balanceState} from "@/atoms/balanceAtoms";
 
 
 const Index = () => {
     const [card, setCard] = useState("balance");
-    const [balance, setBalance] = useState(0);
+
+    const [balance, setBalance] = useRecoilState(balanceState);
     const [amount, setAmount] = useState(0);
 
     useEffect(() => {

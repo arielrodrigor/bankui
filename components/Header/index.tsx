@@ -1,7 +1,11 @@
+'use client';
 import React from 'react';
 import { MagnifyingGlassIcon,ShoppingCartIcon,  GlobeAltIcon, Bars3Icon, UsersIcon, UserCircleIcon } from '@heroicons/react/24/solid'
+import {useRecoilState} from "recoil";
+import {balanceState} from "@/atoms/balanceAtoms";
 
 const Index = () => {
+    const [balance, setBalance] = useRecoilState(balanceState);
     return (
         <header className={'sticky top-0 z-50 grid grid-cols-2 bg-white shadow-md p-5 md:px-10  '}>
             {/*left*/}
@@ -14,7 +18,7 @@ const Index = () => {
             <div className={'text-gray-500 flex items-center justify-end text-xs space-x-6 mx-6 whitespace-nowrap'}>
                 <div className={'link'}>
                     <p>Hello, Ariel</p>
-                    <p className={'font-extrabold md:text-sm'}>$200 (USD) </p>
+                    <p className={'font-extrabold md:text-sm'}>${balance} (USD) </p>
                 </div>
 
                 <div className={'relative link flex items-center'}>

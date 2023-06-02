@@ -2,7 +2,6 @@ import Image from 'next/image'
 import Header from "@/components/Header";
 import AccountBalance from "@/components/AccountBalance";
 import History from "@/components/History";
-
 export default function Home() {
   return (
     <main className="">

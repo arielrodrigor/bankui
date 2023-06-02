@@ -19,7 +19,6 @@ export class Cuenta {
         } else {
             this.detalles.saldoActual -= transaccion.monto;
         }
-        console.log( this.detalles.saldoActual)
     }
 
     getSaldo() {

@@ -29,23 +29,10 @@ export class DepositoRealizado implements Evento {
     data: { detalles: DetallesDeCuenta, transaccion: Transaccion, saldoFinal: number };
 
     constructor(detalles: DetallesDeCuenta, transaccion: Transaccion) {
-        console.log('constructor')
-        console.log( detalles);
         this.data = {
             detalles,
             transaccion,
             saldoFinal: detalles.saldoActual // Aquí ya tienes el saldo actualizado
-        };
-    }
-
-    toFirestore() {
-        return {
-            tipo: this.tipo,
-            data: {
-                detalles: this.data.detalles.toFirestore(),
-                transaccion: this.data.transaccion.toFirestore(),
-                saldoFinal: this.data.saldoFinal
-            }
         };
     }
 }
@@ -59,17 +46,6 @@ export class RetiroRealizado implements Evento {
             detalles,
             transaccion,
             saldoFinal: detalles.saldoActual // Aquí ya tienes el saldo actualizado
-        };
-    }
-
-    toFirestore() {
-        return {
-            tipo: this.tipo,
-            data: {
-                detalles: this.data.detalles.toFirestore(),
-                transaccion: this.data.transaccion.toFirestore(),
-                saldoFinal: this.data.saldoFinal
-            }
         };
     }
 }
