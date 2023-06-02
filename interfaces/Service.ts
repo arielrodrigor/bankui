@@ -1,4 +1,4 @@
-import {CuentaRepository} from "@/infra/Repositories";
+import {CuentaRepository} from "@/infra/CuentaRepository";
 import {Transaccion} from "@/domain/Entities";
 
 export class CuentaService {
@@ -8,8 +8,8 @@ export class CuentaService {
         this.cuentaRepository = cuentaRepository;
     }
 
-    obtenerBalance(numeroDeCuenta: string) {
-        const cuenta = this.cuentaRepository.findByAccountNumber(numeroDeCuenta);
+    async obtenerBalance(numeroDeCuenta: string) {
+        const cuenta = await this.cuentaRepository.findByAccountNumber(numeroDeCuenta);
 
         if (!cuenta) {
             throw new Error(`La cuenta con el número ${numeroDeCuenta} no existe.`);
@@ -18,14 +18,21 @@ export class CuentaService {
         return cuenta.getSaldo();
     }
 
-    realizarTransaccion(numeroDeCuenta: string, transaccion: Transaccion) {
-        const cuenta = this.cuentaRepository.findByAccountNumber(numeroDeCuenta);
+    async realizarTransaccion(numeroDeCuenta: string, transaccion: Transaccion) {
+        const cuenta = await this.cuentaRepository.findByAccountNumber(numeroDeCuenta);
 
         if (!cuenta) {
             throw new Error(`La cuenta con el número ${numeroDeCuenta} no existe.`);
         }
 
+        let nuevoSaldo = cuenta.getSaldo();
+        nuevoSaldo = transaccion.tipo === 'DEPOSITO'
+            ? nuevoSaldo + transaccion.monto
+            : nuevoSaldo - transaccion.monto;
+
         cuenta.realizarTransaccion(transaccion);
-        this.cuentaRepository.save(cuenta);
+
+        await this.cuentaRepository.save(cuenta);
     }
+
 }

@@ -12,7 +12,7 @@ const Index = () => {
 
     useEffect(() => {
         // Simula obtener el número de cuenta del usuario autenticado
-        const accountNumber = '1234567890';
+        const accountNumber = '123456789';
         axios.get(`/api/accounts/${accountNumber}`)
             .then(res => {
                 setBalance(res.data.balance);
@@ -38,7 +38,7 @@ const Index = () => {
     };
 
     const handleDeposit = () => {
-        const accountNumber = '1234567890';
+        const accountNumber = '123456789';
         axios.post(`/api/transactions`, {
             accountNumber: accountNumber,
             type: 'DEPOSITO',
@@ -54,7 +54,7 @@ const Index = () => {
     };
 
     const handleWithdrawal = () => {
-        const accountNumber = '1234567890';
+        const accountNumber = '123456789';
         axios.post(`/api/transactions`, {
             accountNumber: accountNumber,
             type: 'RETIRO',

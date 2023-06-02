@@ -23,8 +23,8 @@ export async function POST(request: Request) {
         if (!amount) {
             return NextResponse.json({ error: 'Monto inválido.' }, { status: 400 });
         }
-        const transaccion = new Transaccion(type, amount);
-        cuentaService.realizarTransaccion(accountNumber, transaccion);
+        const transaccion = new Transaccion(amount,type );
+        await cuentaService.realizarTransaccion(accountNumber, transaccion);
         const newBalance = await cuentaService.obtenerBalance(accountNumber);
 
         return NextResponse.json({ balance: newBalance });
