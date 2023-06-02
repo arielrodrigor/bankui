@@ -9,7 +9,6 @@ import {balanceState} from "@/atoms/balanceAtoms";
 
 const Index = () => {
     const [card, setCard] = useState("balance");
-
     const [balance, setBalance] = useRecoilState(balanceState);
     const [amount, setAmount] = useState(0);
 

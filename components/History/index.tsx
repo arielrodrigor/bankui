@@ -1,9 +1,46 @@
-import React from 'react';
+'use client';
+import React, {useEffect, useState} from 'react';
+import axios from "axios";
+import {Timestamp} from "@firebase/firestore-types";
+import {useRecoilState} from "recoil";
+import {balanceState} from "@/atoms/balanceAtoms";
+
 
 const Index = () => {
+    const [transacciones, setTransacciones] = useState([]);
+    const [balance, setBalance] = useRecoilState(balanceState);
+
+    useEffect(() => {
+        // Simula obtener el número de cuenta del usuario autenticado
+        const accountNumber = '123456789';
+
+        axios.get(
+            `/api/transactions`,
+            { params: { accountNumber} })
+            .then(res => {
+                setTransacciones(res.data.transacciones);
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    }, [balance]);
+
+    function formatearFecha(timestamp: { _seconds: number; _nanoseconds: number }) {
+        const dateObject = new Date();
+        dateObject.setTime(timestamp._seconds * 1000 + timestamp._nanoseconds / 1000000);
+        return dateObject.toLocaleDateString('es-419', {day: 'numeric', month: 'long'});
+    }
+
+
+    function formatearHora(timestamp: { _seconds: number; _nanoseconds: number }) {
+        const dateObject = new Date();
+        dateObject.setTime(timestamp._seconds * 1000 + timestamp._nanoseconds / 1000000);
+        return dateObject.toLocaleTimeString('en-US', {hour: '2-digit', minute:'2-digit'});
+    }
+
+
     return (
         <div>
-
             <section className={'col-span-3  xl:inline-flex xl:min-w-[600px]'}>
                 <div className="w-full bg-white rounded-xl shadow-md overflow-hidden">
                     <div className="px-4 py-5 text-center">
@@ -20,19 +57,18 @@ const Index = () => {
                             </tr>
                             </thead>
                             <tbody>
-                            <tr className="border-b border-gray-200">
-                                <td className="py-2">23/05/2023<br/><span className="text-xs text-gray-500">13:45</span></td>
-                                <td className="py-2">Withdrawal</td>
-                                <td className="py-2 text-red-600">-$50</td>
-                                <td className="py-2">$150</td>
-                            </tr>
-                            <tr className="border-b border-gray-200">
-                                <td className="py-2">22/05/2023<br/><span className="text-xs text-gray-500">16:30</span></td>
-                                <td className="py-2">Deposit</td>
-                                <td className="py-2 text-green-600">+$100</td>
-                                <td className="py-2">$200</td>
-                            </tr>
+                            {transacciones.map((transaccion, index) => (
+                                <tr key={index} className="border-b border-gray-200">
+                                    <td className="py-2">{formatearFecha(transaccion.Date)}<br/><span className="text-xs text-gray-500">{formatearHora(transaccion.Date)}</span></td>
+                                    <td className="py-2">{transaccion.tipo === 'DEPOSITO' ? 'Deposit' : 'Withdrawal'}</td>
+                                    <td className={`py-2 ${transaccion.tipo === 'DEPOSITO' ? 'text-green-600' : 'text-red-600'}`}>
+                                        {transaccion.tipo === 'DEPOSITO' ? '+' : '-'}${transaccion.monto}
+                                    </td>
+                                    <td className="py-2">${transaccion.balance}</td>
+                                </tr>
+                            ))}
                             </tbody>
+
                         </table>
                     </div>
                 </div>

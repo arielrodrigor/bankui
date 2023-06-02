@@ -32,7 +32,7 @@ export class DepositoRealizado implements Evento {
         this.data = {
             detalles,
             transaccion,
-            saldoFinal: detalles.saldoActual // Aquí ya tienes el saldo actualizado
+            saldoFinal: detalles.saldoActual
         };
     }
 }
@@ -45,7 +45,7 @@ export class RetiroRealizado implements Evento {
         this.data = {
             detalles,
             transaccion,
-            saldoFinal: detalles.saldoActual // Aquí ya tienes el saldo actualizado
+            saldoFinal: detalles.saldoActual
         };
     }
 }

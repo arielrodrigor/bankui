@@ -1,6 +1,4 @@
-import admin from "firebase-admin";
 import { adminDb } from "@/firebaseAdmin";
-import {Cuenta, DetallesDeCuenta} from "@/domain/Entities";
 export class FirebaseRepository {
 
 
@@ -22,4 +20,9 @@ export class FirebaseRepository {
         }
         return doc.data() || null;
     }
+    async getTransactionsForAccount(accountNumber: string): Promise<FirebaseFirestore.QuerySnapshot<FirebaseFirestore.DocumentData>> {
+        const accountDocRef = adminDb.collection("cuentas").doc(accountNumber);
+        return await accountDocRef.collection("transacciones").get();
+    }
+
 }

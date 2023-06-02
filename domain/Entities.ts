@@ -20,12 +20,10 @@ export class Cuenta {
             this.detalles.saldoActual -= transaccion.monto;
         }
     }
-
     getSaldo() {
         return this.detalles.saldoActual;
     }
 }
-
 
 export class DetallesDeCuenta {
     nombre: string;
@@ -40,7 +38,6 @@ export class DetallesDeCuenta {
         this.saldoActual = saldoActual;
     }
     toFirestore() {
-
         return {
             nombre: this.nombre,
             numeroDeCuenta: this.numeroDeCuenta,
@@ -57,16 +54,21 @@ export class DetallesDeCuenta {
 export class Transaccion {
     monto: number;
     tipo: 'DEPOSITO' | 'RETIRO';
-    Date: admin.firestore.Timestamp;
-    balance: number;
-
-    constructor(monto: number, tipo: 'DEPOSITO' | 'RETIRO') {
+    Date: FirebaseFirestore.Timestamp | undefined;
+    balance: number | undefined;
+    constructor(monto: number, tipo: 'DEPOSITO' | 'RETIRO', date?: admin.firestore.Timestamp, balance?: number) {
         this.monto = monto;
         this.tipo = tipo;
-        this.Date = admin.firestore.Timestamp.fromDate(new Date());
-        this.balance = 0;
-    }
+        if(balance > 0){
+            this.balance = balance;
+            this.Date = date;
+        }
+        else{
+            this.Date = admin.firestore.Timestamp.fromDate(new Date());
+            this.balance = 0;
+        }
 
+    }
     toFirestore() {
         return {
             monto: this.monto,
@@ -74,5 +76,13 @@ export class Transaccion {
             Date: this.Date,
             balance: this.balance,
         };
+    }
+    static fromFirestore(data: FirebaseFirestore.DocumentData): Transaccion {
+        return new Transaccion(
+            data.monto,
+            data.tipo,
+            data.Date,
+            data.balance
+        );
     }
 }

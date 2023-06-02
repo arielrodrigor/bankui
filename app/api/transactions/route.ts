@@ -11,8 +11,6 @@ type ErrorData = {
 }
 
 export async function POST(request: Request) {
-    const { method } = request
-
     try {
         const { accountNumber, type, amount } = await request.json();
 
@@ -31,6 +29,25 @@ export async function POST(request: Request) {
     } catch (error) {
         if (error instanceof Error) {
             return NextResponse.json({ error: error.message }, { status: 500 })
+        } else {
+            return NextResponse.json({ error: 'Un error desconocido ocurrió.' }, { status: 500 });
+        }
+    }
+}
+
+export async function GET(request: Request) {
+    const { searchParams } = new URL(request.url);
+    const accountNumber = searchParams.get('accountNumber');
+
+    try {
+        if (!accountNumber) {
+            return NextResponse.json({ error: 'Número de cuenta inválido.' }, { status: 400 });
+        }
+        const transacciones = await cuentaService.obtenerTransacciones(accountNumber as string)
+        return NextResponse.json(transacciones);
+    } catch (error) {
+        if (error instanceof Error) {
+            return NextResponse.json({ error: error.message }, { status: 500 });
         } else {
             return NextResponse.json({ error: 'Un error desconocido ocurrió.' }, { status: 500 });
         }
