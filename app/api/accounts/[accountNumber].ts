@@ -1,21 +1,32 @@
-// api/accounts/[accountNumber].ts
-
-import type { NextApiRequest, NextApiResponse } from 'next'
+import { NextResponse } from 'next/server';
+import type { NextApiRequest } from 'next'
 import { cuentaService } from '@/dependencies'
 
-export async function GET(req: NextApiRequest, res: NextApiResponse) {
+type BalanceData = {
+    balance: number;
+}
+
+type ErrorData = {
+    error: string;
+}
+
+export async function POST(req: NextApiRequest) {
     const {
         query: { accountNumber },
     } = req
 
-            try {
-                const balance = await cuentaService.obtenerBalance(accountNumber as string)
-                res.status(200).json({ balance })
-            } catch (error) {
-                if (error instanceof Error) {
-                    res.status(500).json({ error: error.message });
-                } else {
-                    res.status(500).json({ error: 'Un error desconocido ocurrió.' });
-                }
-            }
+    try {
+        if (!accountNumber) {
+            return NextResponse.json({ error: 'Número de cuenta inválido.' }, { status: 400 });
+        }
+        const balance = await cuentaService.obtenerBalance(accountNumber as string)
+
+        return NextResponse.json({ balance });
+    } catch (error) {
+        if (error instanceof Error) {
+            return NextResponse.json({ error: error.message }, { status: 500 });
+        } else {
+            return NextResponse.json({ error: 'Un error desconocido ocurrió.' }, { status: 500 });
+        }
+    }
 }
