@@ -40,7 +40,7 @@ const Index = () => {
 
 
     return (
-        <div>
+        <div data-testid="history-component">
             <section className={'col-span-3  xl:inline-flex xl:min-w-[600px]'}>
                 <div className="w-full bg-white rounded-xl shadow-md overflow-hidden">
                     <div className="px-4 py-5 text-center">

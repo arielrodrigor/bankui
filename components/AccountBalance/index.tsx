@@ -31,14 +31,13 @@ const Index = () => {
     };
 
     const handleClick = (cardName: string) => {
-        setCard(cardName);
         if(card === "deposit") {
             handleDeposit();
         }
         if(card === "withdrawal") {
             handleWithdrawal();
         }
-
+        setCard(cardName);
     };
 
     const handleDeposit = () => {
@@ -75,13 +74,14 @@ const Index = () => {
 
 
     return (
-        <AnimatePresence mode='wait'>
+        <div data-testid="account-balance-component">
+            <AnimatePresence mode='wait'>
 
                 {card === "balance" && (
                     <Card key="balance">
                         <div className="px-4 py-5 text-center">
                             <h2 className="text-gray-600 text-sm font-thin uppercase">Account Balance</h2>
-                            <h1 className="text-4xl font-thin">${balance}</h1>
+                            <h1  className="text-4xl font-thin">${balance}</h1>
                             <p className="text-gray-500 font-thin">US Dollars</p>
                         </div>
                         <div className="px-4 pb-4">
@@ -111,8 +111,8 @@ const Index = () => {
                     </Card>
                 )}
 
-        </AnimatePresence>
-
+            </AnimatePresence>
+        </div>
     );
 };
 

@@ -3,13 +3,7 @@ import './globals.css'
 import { Inter } from 'next/font/google'
 import {
   RecoilRoot,
-  atom,
-  selector,
-  useRecoilState,
-  useRecoilValue,
 } from 'recoil';
-const inter = Inter({ subsets: ['latin'] })
-
 
 export default function RootLayout({
   children,
@@ -19,7 +13,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <RecoilRoot>
-        <body className={inter.className}>{children}</body>
+        <body>{children}</body>
       </RecoilRoot>
     </html>
   )

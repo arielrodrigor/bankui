@@ -7,7 +7,7 @@ import {balanceState} from "@/atoms/balanceAtoms";
 const Index = () => {
     const [balance, setBalance] = useRecoilState(balanceState);
     return (
-        <header className={'sticky top-0 z-50 grid grid-cols-2 bg-white shadow-md p-5 md:px-10  '}>
+        <header data-testid="header-component" className={'sticky top-0 z-50 grid grid-cols-2 bg-white shadow-md p-5 md:px-10  '}>
             {/*left*/}
 
             <div className={'relative flex items-center h-10 cursor-pointer my-auto text-gray-500 justify-start'}>
