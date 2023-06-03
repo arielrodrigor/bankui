@@ -1,34 +1,13 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# Documentación
 
-## Getting Started
+Comandos para ejecutar el proyecto:
 
-First, run the development server:
+1. **Instalar dependencias**: Para instalar las dependencias del proyecto, abra una terminal en el directorio raíz del proyecto y ejecute el comando **`npm install`**.
+2. **Ejecutar el proyecto**: Para ejecutar el proyecto en modo de desarrollo, ejecute el comando **`npm run dev`** en la terminal. Esto iniciará el servidor de desarrollo y podrá acceder a la aplicación en su navegador en **`http://localhost:3000`**.
+3. **Ejecutar pruebas**: Para ejecutar las pruebas del proyecto, ejecute el comando **`npm run test`** en la terminal. Esto ejecutará todas las pruebas del proyecto y mostrará los resultados en la terminal.
+4. **Cobertura de pruebas**: Para generar un informe de cobertura de pruebas, ejecute el comando **`npm run test:coverage`** en la terminal. Esto ejecutará todas las pruebas y generará un informe de cobertura en la carpeta **`coverage`** del proyecto. Puede ver el informe de cobertura abriendo el archivo **`coverage/lcov-report/index.html`** en su navegador. Esto le mostrará una vista detallada de qué partes del código están cubiertas por las pruebas y cuáles no.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/basic-features/font-optimization) to automatically optimize and load Inter, a custom Google Font.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+- **Capa de aplicación**: Esta capa es responsable de mediar entre sus interfaces de entrada y su dominio empresarial. En esta capa tendremos los casos de uso de su aplicación y sus servicios de aplicación (como un servicio de correo que se comunica con un servicio Mailchimp desde la capa de infraestructura).
+- **Capa del dominio**: Aquí definirás tus clases, funciones y servicios del dominio empresarial que componen tu modelo de dominio. Todas tus reglas comerciales deben declararse en esta capa para que la capa de aplicación pueda usarla para componer tus casos de uso.
+- **Capa infra**: Esta es la capa más baja. En la capa infra tendrás la comunicación con lo que está fuera de tu aplicación, como la base de datos (consulta la sección del patrón del repositorio en [ [Recomendaciones y operaciones de patrones]]), servicios de correo y comunicación directa con marcos.
+- **Carpeta interfaces**: Esta carpeta contiene todos los puntos de entrada para tu aplicación. Desde el principio aquí es donde estarán tus controladores Express (dentro de la carpeta interfaces / http).
