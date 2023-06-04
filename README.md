@@ -1,5 +1,4 @@
 # Documentación
-#Bienvenidos! 
 
 Comandos para ejecutar el proyecto:
 
