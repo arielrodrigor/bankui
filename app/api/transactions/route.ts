@@ -1,16 +1,10 @@
-import { NextResponse } from 'next/server';
+
+import { NextResponse, NextRequest } from 'next/server';
 import { cuentaService } from '@/dependencies'
 import { Transaccion } from '@/domain/Entities'
+import {CuentaNoEncontradaError, MontoInvalidoError} from "@/interfaces/Errores";
 
-type BalanceData = {
-    balance: number;
-}
-
-type ErrorData = {
-    error: string;
-}
-
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     try {
         const { accountNumber, type, amount } = await request.json();
 
@@ -27,15 +21,15 @@ export async function POST(request: Request) {
 
         return NextResponse.json({ balance: newBalance });
     } catch (error) {
-        if (error instanceof Error) {
-            return NextResponse.json({ error: error.message }, { status: 500 })
+        if (error instanceof CuentaNoEncontradaError || error instanceof MontoInvalidoError) {
+            return NextResponse.json({ error: error.message }, { status: 400 });
         } else {
             return NextResponse.json({ error: 'Un error desconocido ocurrió.' }, { status: 500 });
         }
     }
 }
 
-export async function GET(request: Request) {
+export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     const accountNumber = searchParams.get('accountNumber');
 
@@ -46,8 +40,8 @@ export async function GET(request: Request) {
         const transacciones = await cuentaService.obtenerTransacciones(accountNumber as string)
         return NextResponse.json(transacciones);
     } catch (error) {
-        if (error instanceof Error) {
-            return NextResponse.json({ error: error.message }, { status: 500 });
+        if (error instanceof CuentaNoEncontradaError || error instanceof MontoInvalidoError) {
+            throw new CuentaNoEncontradaError(`La cuenta con el número ${accountNumber} es invalida.`);
         } else {
             return NextResponse.json({ error: 'Un error desconocido ocurrió.' }, { status: 500 });
         }

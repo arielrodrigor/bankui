@@ -55,19 +55,12 @@ export class Transaccion {
     monto: number;
     tipo: 'DEPOSITO' | 'RETIRO';
     Date: FirebaseFirestore.Timestamp | undefined;
-    balance: number | undefined;
+    balance: number;
     constructor(monto: number, tipo: 'DEPOSITO' | 'RETIRO', date?: admin.firestore.Timestamp, balance?: number) {
         this.monto = monto;
         this.tipo = tipo;
-        if(balance > 0){
-            this.balance = balance;
-            this.Date = date;
-        }
-        else{
-            this.Date = admin.firestore.Timestamp.fromDate(new Date());
-            this.balance = 0;
-        }
-
+        this.Date = date ? date : admin.firestore.Timestamp.fromDate(new Date());
+        this.balance = balance !== undefined ? balance : 0;
     }
     toFirestore() {
         return {

@@ -1,14 +1,16 @@
-import { render, screen } from '@testing-library/react';
+import { render, screen, act } from '@testing-library/react';
 import Home from '@/app/page';
 import { RecoilRoot } from 'recoil';
 
 describe('Home', () => {
-    beforeEach(() => {
-        render(
-            <RecoilRoot>
-                <Home />
-            </RecoilRoot>
-        );
+    beforeEach(async () => {
+        await act(async () => {
+            render(
+                <RecoilRoot>
+                    <Home />
+                </RecoilRoot>
+            );
+        });
     });
 
     test('renders Header component', () => {

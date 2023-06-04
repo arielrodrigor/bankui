@@ -1,15 +1,8 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { cuentaService } from '@/dependencies'
 
-type BalanceData = {
-    balance: number;
-}
 
-type ErrorData = {
-    error: string;
-}
-
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
     const {
         params: { accountNumber },
     } =  await request.json();

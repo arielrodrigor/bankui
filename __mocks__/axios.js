@@ -31,10 +31,16 @@ mockAxios.get.mockImplementation(url => {
                         saldoInicial: 1000,
                         saldoActual: 530
                     }
-                }
+                },
+                status: 200
             });
         default:
-            return Promise.reject(new Error('not found'));
+            return Promise.reject({
+                response: {
+                    status: 404,
+                    data: { message: 'not found' }
+                }
+            });
     }
 });
 
@@ -47,17 +53,52 @@ mockAxios.post.mockImplementation((url, data) => {
                     numeroDeCuenta: '123456789',
                     saldoInicial: 1000,
                     saldoActual: 530
-                }
+                },
+                status: 200
             });
         case '/api/transactions':
+            if (!data.accountNumber) {
+                return Promise.reject({
+                    response: {
+                        status: 400,
+                        data: { error: 'Número de cuenta inválido.' }
+                    }
+                });
+            }
+            if (!data.amount) {
+                return Promise.reject({
+                    response: {
+                        status: 400,
+                        data: { error: 'Monto inválido.' }
+                    }
+                });
+            }
             return Promise.resolve({
                 data: {
                     transacciones: [
+                        {
+                            monto: 500,
+                            tipo: 'DEPOSITO',
+                            balance: 1530,
+                            Date: { _seconds: 1648748400, _nanoseconds: 0 }
+                        },
+                        {
+                            monto: 200,
+                            tipo: 'RETIRO',
+                            balance: 1330,
+                            Date: { _seconds: 1648758400, _nanoseconds: 0 }
+                        }
                     ],
-                }
+                },
+                status: 200
             });
         default:
-            return Promise.reject(new Error('not found'));
+            return Promise.reject({
+                response: {
+                    status: 404,
+                    data: { message: 'not found' }
+                }
+            });
     }
 });
 

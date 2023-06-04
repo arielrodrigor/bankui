@@ -1,13 +1,20 @@
 'use client';
 import React, {useEffect, useState} from 'react';
 import axios from "axios";
-import {Timestamp} from "@firebase/firestore-types";
 import {useRecoilState} from "recoil";
 import {balanceState} from "@/atoms/balanceAtoms";
 
-
+interface Transaccion {
+    tipo: 'DEPOSITO' | 'RETIRO';
+    monto: number;
+    balance: number;
+    Date: {
+        _seconds: number;
+        _nanoseconds: number;
+    };
+}
 const Index = () => {
-    const [transacciones, setTransacciones] = useState([]);
+    const [transacciones, setTransacciones] = useState<Transaccion[]>([])
     const [balance, setBalance] = useRecoilState(balanceState);
 
     useEffect(() => {

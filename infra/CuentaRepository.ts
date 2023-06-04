@@ -3,7 +3,7 @@ import { Cuenta, DetallesDeCuenta, Transaccion } from "@/domain/Entities";
 import { DepositoRealizado, RetiroRealizado } from "@/domain/Events";
 import {FirebaseRepository} from "@/infra/FirebaseRepository";
 
-export class CuentaRepository {
+export  class CuentaRepository {
     private eventStore: EventStore;
     private firebaseRepository: FirebaseRepository;
 
@@ -14,7 +14,7 @@ export class CuentaRepository {
 
     async save(cuenta: Cuenta) {
         // Removed the CuentaCreada event generation from here
-        const eventos = [];
+        const eventos: any[] = [];
 
         cuenta.transacciones.forEach(transaccion => {
             const evento = transaccion.tipo === 'DEPOSITO'
@@ -77,6 +77,4 @@ export class CuentaRepository {
         });
         return cuenta;
     }
-
-
 }
