@@ -22,7 +22,7 @@ const Index = () => {
                 setBalance(res.data.balance);
             })
             .catch(err => {
-                console.error(err);
+                alert('cuenta no encontrada')
             });
     }, []);
 
@@ -42,7 +42,7 @@ const Index = () => {
 
     const handleDeposit = () => {
         const accountNumber = '123456789';
-        axios.post(`/api/transactions`, {
+        return axios.post(`/api/transactions`, {
             accountNumber: accountNumber,
             type: 'DEPOSITO',
             amount: amount
@@ -50,15 +50,12 @@ const Index = () => {
             .then(res => {
                 setBalance(res.data.balance);
                 setCard('balance');
-            })
-            .catch(err => {
-                console.error(err);
             });
     };
 
     const handleWithdrawal = () => {
         const accountNumber = '123456789';
-        axios.post(`/api/transactions`, {
+        return axios.post(`/api/transactions`, {
             accountNumber: accountNumber,
             type: 'RETIRO',
             amount: amount
@@ -66,11 +63,9 @@ const Index = () => {
             .then(res => {
                 setBalance(res.data.balance);
                 setCard('balance');
-            })
-            .catch(err => {
-                console.error(err);
             });
     };
+
 
 
     return (

@@ -15,6 +15,20 @@ jest.mock('firebase-admin', () => ({
     })),
 }));
 
+jest.mock('firebase-admin', () => ({
+    credential: {
+        cert: jest.fn().mockImplementation((serviceAccount) => serviceAccount), // Aquí devolvemos el serviceAccount
+    },
+    initializeApp: jest.fn(),
+    firestore: jest.fn(() => ({
+        collection: jest.fn(() => ({
+            doc: jest.fn(() => ({
+                set: jest.fn(),
+            })),
+        })),
+    })),
+}));
+
 
 jest.mock('firebase-admin/app', () => ({
     getApps: jest.fn(),
@@ -23,7 +37,9 @@ jest.mock('firebase-admin/app', () => ({
 describe('Firebase Admin Initialization', () => {
     afterEach(() => {
         jest.resetAllMocks();
+
     });
+
 
     it('should initialize firebase admin if no apps exist', () => {
         getApps.mockReturnValue([]);
@@ -46,4 +62,5 @@ describe('Firebase Admin Initialization', () => {
 
         expect(admin.initializeApp).not.toHaveBeenCalled();
     });
+
 });

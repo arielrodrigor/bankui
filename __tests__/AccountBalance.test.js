@@ -68,4 +68,48 @@ describe('AccountBalance', () => {
 
 
 
+    test('should handle error when depositing', async () => {
+        const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
+        axios.post.mockRejectedValueOnce(new Error());
+
+        render(
+            <RecoilRoot>
+                <AccountBalance />
+            </RecoilRoot>
+        );
+
+        const depositButtons = screen.getAllByRole('button', { name: /Deposit/i });
+        fireEvent.click(depositButtons[0]);
+        await waitFor(() => screen.getByPlaceholderText(/amount/i));
+        fireEvent.change(screen.getByPlaceholderText(/amount/i), { target: { value: '1000' } });
+        fireEvent.click(depositButtons[1]);
+
+        await waitFor(() => expect(alertSpy).toHaveBeenCalled());
+        expect(alertSpy).toHaveBeenCalledWith("cuenta no encontrada");
+    });
+
+    test('should handle error when withdrawing', async () => {
+        const alertSpy = jest.spyOn(window, 'alert').mockImplementation(() => {});
+        axios.post.mockRejectedValueOnce(new Error());
+
+        render(
+            <RecoilRoot>
+                <AccountBalance />
+            </RecoilRoot>
+        );
+
+        const withdrawalButtons = screen.getAllByRole('button', { name: /Withdrawal/i });
+        fireEvent.click(withdrawalButtons[0]);
+        await waitFor(() => screen.getByPlaceholderText(/amount/i));
+        fireEvent.change(screen.getByPlaceholderText(/amount/i), { target: { value: '500' } });
+        fireEvent.click(withdrawalButtons[1]);
+
+        await waitFor(() => expect(alertSpy).toHaveBeenCalled());
+        expect(alertSpy).toHaveBeenCalledWith("cuenta no encontrada");
+    });
+
+
+
+
+
 });
