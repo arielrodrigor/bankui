@@ -90,7 +90,7 @@ const Index = () => {
                     <Card key="deposit">
                         <div className="px-4 py-5 text-center">
                             <h2 className="text-gray-600 text-sm font-thin uppercase">Deposit</h2>
-                            <input className="border border-gray-300 rounded px-3 py-2 w-full mb-4" type="text" placeholder="Amount"  onChange={handleAmountChange} />
+                            <input className="border border-gray-300 rounded px-3 py-2 w-full mb-4" type="number" placeholder="Amount"  onChange={handleAmountChange} />
                             <button onClick={() => handleClick("balance")} className="bg-red-400 hover:bg-red-500 text-white font-bold py-2 px-4 rounded-2xl w-full">Deposit</button>
                         </div>
                     </Card>
@@ -100,7 +100,7 @@ const Index = () => {
                     <Card key="withdrawal">
                         <div className="px-4 py-5 text-center">
                             <h2 className="text-gray-600 text-sm font-thin uppercase">Withdrawal</h2>
-                            <input className="border border-gray-300 rounded px-3 py-2 w-full mb-4" type="text" placeholder="Amount"  onChange={handleAmountChange} />
+                            <input className="border border-gray-300 rounded px-3 py-2 w-full mb-4" type="number" placeholder="Amount"  onChange={handleAmountChange} />
                             <button onClick={() => handleClick("balance")} className="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-2xl w-full">Withdrawal</button>
                         </div>
                     </Card>
