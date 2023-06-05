@@ -41,7 +41,8 @@ Además, esta aplicación cuenta con una estructura de carpetas clara que sigue 
 Este proyecto es un ejemplo práctico de cómo se puede implementar DDD y Event Sourcing en una aplicación moderna, y espero que sirva de referencia y guía.
 
 
-<img width="816" alt="Captura de pantalla 2023-06-05 a la(s) 11 59 49 a m" src="https://github.com/arielrodrigor/bankui/assets/10542127/5afee3aa-f359-49cb-85c0-79b0b7f13821">
+<img width="796" alt="Captura de pantalla 2023-06-05 a la(s) 3 47 16 p m" src="https://github.com/arielrodrigor/bankui/assets/10542127/8ebb1982-bb09-4391-81a5-8ed46b0a1e81">
+
 <img width="408" alt="Captura de pantalla 2023-06-05 a la(s) 11 59 36 a m" src="https://github.com/arielrodrigor/bankui/assets/10542127/9f0aec4a-58f4-42a6-afcb-0dcb3296297b">
 <img width="421" alt="Captura de pantalla 2023-06-05 a la(s) 11 59 12 a m" src="https://github.com/arielrodrigor/bankui/assets/10542127/1dd63ed7-3ac8-4c09-9d61-23f0a567ec90">
 <img width="402" alt="Captura de pantalla 2023-06-05 a la(s) 11 59 07 a m" src="https://github.com/arielrodrigor/bankui/assets/10542127/f147fe7e-15b3-47cc-bc95-044b835df7a1">
