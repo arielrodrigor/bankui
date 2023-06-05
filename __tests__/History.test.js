@@ -1,7 +1,9 @@
-import { render, screen, waitFor, act } from '@testing-library/react';
+import {render, screen, act, renderHook, waitFor} from '@testing-library/react';
 import { RecoilRoot } from 'recoil';
 import axios from 'axios';
 import History from "../components/History";
+import useTransactions from "../components/History/useTransactions";
+
 
 jest.mock('axios');
 
@@ -94,5 +96,22 @@ describe('Index', () => {
         expect(screen.getByText('$1000')).toBeInTheDocument();
         expect(screen.getByText('$950')).toBeInTheDocument();
     });
+
+
+    describe('useTransactions', () => {
+        it('sets an error when axios.get fails', async () => {
+            axios.get.mockRejectedValueOnce(new Error('Test error'));
+
+            const { result, waitForValueToChange } = renderHook(() => useTransactions());
+
+            await act(async () => {
+                await waitFor(() => result.current.error);
+            });
+
+            expect(result.current.error).toBe('Test error');
+        });
+    });
+
+
 });
 

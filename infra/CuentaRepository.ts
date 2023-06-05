@@ -2,6 +2,7 @@ import { EventStore } from "@/domain/EventStore";
 import { Cuenta, DetallesDeCuenta, Transaccion } from "@/domain/Entities";
 import { DepositoRealizado, RetiroRealizado } from "@/domain/Events";
 import {FirebaseRepository} from "@/infra/FirebaseRepository";
+import {CuentaNoEncontradaError} from "@/interfaces/Errores";
 
 export  class CuentaRepository {
     private eventStore: EventStore;
@@ -47,7 +48,7 @@ export  class CuentaRepository {
             const cuentaData = await this.firebaseRepository.getAccountByNumber(numeroDeCuenta);
 
             if (!cuentaData) {
-                return null;
+                throw new CuentaNoEncontradaError(`La cuenta con el número ${numeroDeCuenta} no existe.`);
             }
             detallesDeCuenta = DetallesDeCuenta.fromFirestore(cuentaData);
         }
@@ -64,7 +65,7 @@ export  class CuentaRepository {
             const cuentaData = await this.firebaseRepository.getAccountByNumber(numeroDeCuenta);
 
             if (!cuentaData) {
-                return null;
+                throw new CuentaNoEncontradaError(`La cuenta con el número ${numeroDeCuenta} no existe.`);
             }
             detallesDeCuenta = DetallesDeCuenta.fromFirestore(cuentaData);
         }

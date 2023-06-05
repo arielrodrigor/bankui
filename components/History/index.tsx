@@ -3,34 +3,12 @@ import React, {useEffect, useState} from 'react';
 import axios from "axios";
 import {useRecoilState} from "recoil";
 import {balanceState} from "@/atoms/balanceAtoms";
+import useTransactions from "@/components/History/useTransactions";
 
-interface Transaccion {
-    tipo: 'DEPOSITO' | 'RETIRO';
-    monto: number;
-    balance: number;
-    Date: {
-        _seconds: number;
-        _nanoseconds: number;
-    };
-}
+
 const Index = () => {
-    const [transacciones, setTransacciones] = useState<Transaccion[]>([])
+    const { transacciones, error } = useTransactions();
     const [balance, setBalance] = useRecoilState(balanceState);
-
-    useEffect(() => {
-        // Simula obtener el número de cuenta del usuario autenticado
-        const accountNumber = '123456789';
-
-        axios.get(
-            `/api/transactions`,
-            { params: { accountNumber} })
-            .then(res => {
-                setTransacciones(res.data.transacciones);
-            })
-            .catch(err => {
-                console.error(err);
-            });
-    }, [balance]);
 
     function formatearFecha(timestamp: { _seconds: number; _nanoseconds: number }) {
         const dateObject = new Date();

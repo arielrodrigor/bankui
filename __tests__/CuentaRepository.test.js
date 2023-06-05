@@ -1,5 +1,6 @@
 import {Cuenta, DetallesDeCuenta, Transaccion} from "../domain/Entities";
 import {CuentaRepository} from "../infra/CuentaRepository";
+import {CuentaNoEncontradaError} from "../interfaces/Errores";
 
 
 describe('CuentaRepository', () => {
@@ -129,6 +130,29 @@ describe('CuentaRepository', () => {
             expect(mockFirebaseRepository.getTransactionsForAccount).toHaveBeenCalledWith(numeroDeCuenta);
         });
     });
+
+    describe('findByAccountNumber', () => {
+        it('should throw an error if account number does not exist', async () => {
+            const numeroDeCuenta = '123456789';
+            mockEventStore.obtenerEventosParaEntidad.mockReturnValueOnce([]);
+            mockFirebaseRepository.getAccountByNumber.mockReturnValueOnce(null);
+
+            await expect(cuentaRepository.findByAccountNumber(numeroDeCuenta))
+                .rejects.toThrow(CuentaNoEncontradaError);
+        });
+    });
+
+    describe('transactionsByAccountNumber', () => {
+        it('should throw an error if account number does not exist', async () => {
+            const numeroDeCuenta = '123456789';
+            mockEventStore.obtenerEventosParaEntidad.mockReturnValueOnce([]);
+            mockFirebaseRepository.getAccountByNumber.mockReturnValueOnce(null);
+
+            await expect(cuentaRepository.transactionsByAccountNumber(numeroDeCuenta))
+                .rejects.toThrow(CuentaNoEncontradaError);
+        });
+    });
+
 
 
 });
