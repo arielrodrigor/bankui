@@ -85,4 +85,50 @@ describe('CuentaRepository', () => {
             expect(mockFirebaseRepository.getTransactionsForAccount).toHaveBeenCalledWith(numeroDeCuenta);
         });
     });
+
+    // Test for save() method when there are no transactions
+    describe('save', () => {
+        it('should handle empty transactions array', async () => {
+            const cuenta = new Cuenta(new DetallesDeCuenta());
+
+            await cuentaRepository.save(cuenta);
+
+            expect(mockEventStore.grabar).not.toHaveBeenCalled();
+            expect(mockFirebaseRepository.saveAccount).toHaveBeenCalled();
+        });
+    });
+
+// Test for findByAccountNumber() method when events are returned
+    describe('findByAccountNumber', () => {
+        it('should handle case when events are returned', async () => {
+            const numeroDeCuenta = '123456789';
+            mockEventStore.obtenerEventosParaEntidad.mockReturnValueOnce([{ data: { detalles: new DetallesDeCuenta() } }]);
+
+            const cuenta = await cuentaRepository.findByAccountNumber(numeroDeCuenta);
+
+            expect(cuenta).toBeDefined();
+            expect(mockEventStore.obtenerEventosParaEntidad).toHaveBeenCalledWith('Cuenta', numeroDeCuenta);
+            expect(mockFirebaseRepository.getAccountByNumber).not.toHaveBeenCalled();
+        });
+    });
+
+// Test for transactionsByAccountNumber() method when events are returned
+    describe('transactionsByAccountNumber', () => {
+        it('should handle case when events are returned', async () => {
+            const numeroDeCuenta = '123456789';
+            mockEventStore.obtenerEventosParaEntidad.mockReturnValueOnce([{ data: { detalles: new DetallesDeCuenta() } }]);
+            mockFirebaseRepository.getTransactionsForAccount.mockReturnValueOnce([{
+                data: () => new Transaccion()
+            }]);
+
+            const cuenta = await cuentaRepository.transactionsByAccountNumber(numeroDeCuenta);
+
+            expect(cuenta).toBeDefined();
+            expect(mockEventStore.obtenerEventosParaEntidad).toHaveBeenCalledWith('Cuenta', numeroDeCuenta);
+            expect(mockFirebaseRepository.getAccountByNumber).not.toHaveBeenCalled();
+            expect(mockFirebaseRepository.getTransactionsForAccount).toHaveBeenCalledWith(numeroDeCuenta);
+        });
+    });
+
+
 });

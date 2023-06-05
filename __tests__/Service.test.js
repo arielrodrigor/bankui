@@ -1,4 +1,5 @@
 import { CuentaRepository } from "@/infra/CuentaRepository";
+import {CuentaNoEncontradaError} from "../interfaces/Errores";
 const {CuentaService} = require("../interfaces/Service");
 const Transaccion = require("@/domain/Entities").Transaccion;
 
@@ -67,4 +68,52 @@ describe('CuentaService', () => {
         expect(cuentaRepository.transactionsByAccountNumber).toHaveBeenCalledWith(mockNumeroDeCuenta);
         expect(result).toHaveLength(2);
     });
+
+
+    // Test for obtenerBalance() method when account is not found
+    test('obtenerBalance() should throw error when account is not found', async () => {
+        const mockNumeroDeCuenta = '12345678';
+        cuentaRepository.findByAccountNumber.mockResolvedValue(null);
+
+        try {
+            await cuentaService.obtenerBalance(mockNumeroDeCuenta);
+        } catch (error) {
+            expect(error).toBeInstanceOf(CuentaNoEncontradaError);
+        }
+
+        expect(cuentaRepository.findByAccountNumber).toHaveBeenCalledWith(mockNumeroDeCuenta);
+    });
+
+// Test for realizarTransaccion() method when account is not found
+    test('realizarTransaccion() should throw error when account is not found', async () => {
+        const mockNumeroDeCuenta = '12345678';
+        const mockTransaccion = new Transaccion();
+
+        cuentaRepository.findByAccountNumber.mockResolvedValue(null);
+
+        try {
+            await cuentaService.realizarTransaccion(mockNumeroDeCuenta, mockTransaccion);
+        } catch (error) {
+            expect(error).toBeInstanceOf(CuentaNoEncontradaError);
+        }
+
+        expect(cuentaRepository.findByAccountNumber).toHaveBeenCalledWith(mockNumeroDeCuenta);
+    });
+
+// Test for obtenerTransacciones() method when account is not found
+    test('obtenerTransacciones() should throw error when account is not found', async () => {
+        const mockNumeroDeCuenta = '12345678';
+
+        cuentaRepository.transactionsByAccountNumber.mockResolvedValue(null);
+
+        try {
+            await cuentaService.obtenerTransacciones(mockNumeroDeCuenta);
+        } catch (error) {
+            expect(error).toBeInstanceOf(CuentaNoEncontradaError);
+        }
+
+        expect(cuentaRepository.transactionsByAccountNumber).toHaveBeenCalledWith(mockNumeroDeCuenta);
+    });
+
+
 });
