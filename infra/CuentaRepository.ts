@@ -16,7 +16,6 @@ export  class CuentaRepository {
     async save(cuenta: Cuenta) {
         // Removed the CuentaCreada event generation from here
         const eventos: any[] = [];
-
         cuenta.transacciones.forEach(transaccion => {
             const evento = transaccion.tipo === 'DEPOSITO'
                 ? new DepositoRealizado(cuenta.detalles, transaccion)
@@ -25,7 +24,6 @@ export  class CuentaRepository {
             evento.data.transaccion.balance = evento.data.saldoFinal;
             eventos.push(evento);
             cuenta.detalles.saldoActual = evento.data.saldoFinal;
-
         });
         // Save the events to the event store
         eventos.forEach(evento => this.eventStore.grabar(evento));

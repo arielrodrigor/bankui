@@ -68,6 +68,7 @@ describe('FirebaseRepository', () => {
             const accountNumber = '123456789';
             const mockDoc = {
                 exists: false,
+                data: jest.fn()
             };
             mockDocRef.get.mockResolvedValueOnce(mockDoc);
 
@@ -75,8 +76,26 @@ describe('FirebaseRepository', () => {
 
             expect(accountData).toBeNull();
             expect(mockDocRef.get).toHaveBeenCalled();
+            expect(mockDoc.data).not.toHaveBeenCalled();
         });
+
     });
+
+    it('should return null if account exists but has no data', async () => {
+        const accountNumber = '123456789';
+        const mockDoc = {
+            exists: true,
+            data: jest.fn().mockReturnValue(undefined),  // Simulate a document with no data
+        };
+        mockDocRef.get.mockResolvedValueOnce(mockDoc);
+
+        const accountData = await firebaseRepository.getAccountByNumber(accountNumber);
+
+        expect(accountData).toBeNull();
+        expect(mockDocRef.get).toHaveBeenCalled();
+        expect(mockDoc.data).toHaveBeenCalled();
+    });
+
 
     // Tests for getTransactionsForAccount() method
     describe('getTransactionsForAccount', () => {

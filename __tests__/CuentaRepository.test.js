@@ -1,6 +1,7 @@
 import {Cuenta, DetallesDeCuenta, Transaccion} from "../domain/Entities";
 import {CuentaRepository} from "../infra/CuentaRepository";
 import {CuentaNoEncontradaError} from "../interfaces/Errores";
+import {DepositoRealizado, RetiroRealizado} from "../domain/Events";
 
 
 describe('CuentaRepository', () => {
@@ -150,6 +151,27 @@ describe('CuentaRepository', () => {
 
             await expect(cuentaRepository.transactionsByAccountNumber(numeroDeCuenta))
                 .rejects.toThrow(CuentaNoEncontradaError);
+        });
+    });
+    describe('save', () => {
+        it('should generate and store DepositoRealizado and RetiroRealizado events', async () => {
+            const cuenta = new Cuenta(new DetallesDeCuenta());
+            // Agregamos transacciones de ambos tipos a la cuenta
+            cuenta.transacciones.push(new Transaccion(2 ,'DEPOSITO',null, 2));
+            cuenta.transacciones.push(new Transaccion(2 ,'RETIRO',null, 0));
+
+            await cuentaRepository.save(cuenta);
+            // Comprobamos que el método grabar fue llamado dos veces
+            expect(mockEventStore.grabar).toHaveBeenCalledTimes(2);
+            // Comprobamos que el primer evento es un DepositoRealizado y el segundo un RetiroRealizado
+            const firstEvent = mockEventStore.grabar.mock.calls[0][0];
+            const secondEvent = mockEventStore.grabar.mock.calls[1][0];
+            expect(firstEvent).toBeInstanceOf(DepositoRealizado);
+            expect(secondEvent).toBeInstanceOf(RetiroRealizado);
+
+            // Comprobamos que los eventos tienen el balance correcto
+            expect(firstEvent.data.transaccion.balance).toBe(firstEvent.data.saldoFinal);
+            expect(secondEvent.data.transaccion.balance).toBe(secondEvent.data.saldoFinal);
         });
     });
 
